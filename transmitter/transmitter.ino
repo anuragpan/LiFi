@@ -1,16 +1,10 @@
-int a=1;
-
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  DDRC = 0b10000000;
+void setup() 
+{
+  Serial.begin(4800);
+  pinMode(2,OUTPUT);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  PORTC = 0b00000000;
- _delay_us(500);
-  PORTC = 0b10000000;
-  _delay_us(500);
-  
+void loop() 
+{
+  Serial.println("1");
 }
