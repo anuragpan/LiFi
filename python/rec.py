@@ -26,9 +26,9 @@ text_file = open("newFile.txt", 'w')
 while 1:
     if ser.inWaiting():
         x=ser.read()
-        if x is '$' :
-        	break 
         if start:
+        	if x is '$' :
+        		break 
 	        text_file.write(x)
 	        # if x=="\n":
 	        #      text_file.seek(0)
