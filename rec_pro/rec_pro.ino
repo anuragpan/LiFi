@@ -1,10 +1,12 @@
-byte START = 0x45;
-byte STOP = 0x54;
-byte ACK = 0x99;
+byte START = 0x45; //the start of frame
+//byte STOP = 0x54;  //the end of frame/
+byte ACK = 0x54;   //the acknowledgement
+byte CHECK;       //check-sum of the packet
+byte ID;
 String packet = "";
 String text = "";
-char uart[8];
-byte CHECK; 
+byte uart[9];
+
 
 #include<SoftwareSerial.h>// soft serial port header file
 SoftwareSerial Serial2(0,2); // define the soft serial port as Serial2, D3 as RX, and D4 as TX
@@ -19,27 +21,28 @@ void loop()
 {
   if(Serial2.available())
   {
-     if(Serial2.peek()==STOP)
-     {
-      Serial2.println(text);
-     }
+     //uart ko 0 kar
      uart[0] = Serial2.read();
-     Serial.print(uart[0]);
+     Serial.println((char)uart[0]);
+     
      if(uart[0]==START)
      {
-      for(int i=1;i<8;i++)
+      uart[1] = Serial2.read();  //size
+      Serial.println((char)uart[1]);
+      for(int i=0 ; i < (int)uart[1] ; i++)
       {
-        uart[i]=Serial2.read();
-        Serial.print(uart[i]);     
+        uart[i+2]=Serial2.read();
+        packet+=(char)uart[i+2]; 
+        Serial.print((char)uart[i+2]);     
       }
-      CHECK = uart[0]+uart[1]+uart[2]+uart[3]+uart[4]+uart[5]+uart[6];
-      if(CHECK==uart[7])
+      for(int i=0;i<8;i++){
+        CHECK += uart[i]; //sum on the receiving side
+        uart[i] = 0;
+      }
+      
+      
+      if(CHECK==uart[8])
       {
-          for(int i=1;i<7;i++)
-          {
-            packet+=uart[i]; 
-            Serial.print(packet);    
-          }
           Serial2.write(ACK);
           Serial.write(ACK);
           text+=packet;
