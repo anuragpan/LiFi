@@ -1,10 +1,11 @@
 byte START = 0x45; //the start of frame
 //byte STOP = 0x54;  //the end of frame/
-byte SIZE;
-byte ACK = 0x54;   //the acknowledgement
+byte SIZE = 0x6;
+byte ACK = 0x6;  //the acknowledgement
+byte ack;
 byte CHECK;        //check-sum of the packet
 byte ID;
-int data = 6;    //info packet size for a frame
+int data = 6;    //info packet size for a frame badme badal
 String text = "popeye";
 int i=0,a=0;      //on which letter of the string you are currently
 
@@ -26,7 +27,7 @@ void loop()
       Serial2.write(START); // start
       Serial.write(START);
 
-      SIZE = min(6,(int)text.length()-a);
+//    SIZE = min(6,(int)text.length()-a);
       CHECK+=SIZE;
       Serial2.write(SIZE);
       Serial.print(SIZE,HEX);
@@ -39,17 +40,24 @@ void loop()
        }
        
       Serial2.write(CHECK); // data
-      Serial.write(CHECK);
-      
-      for(int wait = 0; wait<3;wait++)
+      Serial.println(CHECK,HEX);
+      unsigned long Time = millis();
+      while(millis()-Time < 3000)
       {
-        if(Serial2.available() && Serial2.read()==ACK)
+        yield();
+        while(Serial2.available())
         {  
+          Serial.println("inside available");
+          ack = Serial2.read();
+          Serial.println(ack,HEX);
+          if(ack== ACK){
             a+=i;
-            break;  
+            Serial.println("STOP");
+            break;
+          }
         }
-        Serial.print("waiting");
-        delay(1000);
+//        /else
+//        /Serial.println("waiting");
       }
     }
 }
