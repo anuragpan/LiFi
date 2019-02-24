@@ -1,8 +1,10 @@
 // permanent info
 
-byte START = 0x45; //the start of frame
-byte ACK = 0x95;  //the acknowledgement
+byte START = 0x45;  //the start of frame
+byte STOP = 0x54;
+byte ACK = 0x95;    //the acknowledgement
 byte ID;
+int n = 9;          // pulse width
 
 // calculated for every pulse
 
@@ -10,6 +12,7 @@ int SIZE;
 byte CHECK;        //check-sum of the packet
 String packet = "";
 String text = "";
+unsigned long Time;
 
 // the pulse
 
@@ -22,18 +25,19 @@ void setup()
 {
   Serial2.begin(4800);
   Serial.begin(4800);
+  text = "";
 }
 
 void loop() 
 {
   // resets
 
-  int SIZE = 0;
-  byte CHECK = 0;
-  String packet = "";
+   SIZE = 0;
+   CHECK = 0;
+   packet = "";
   
   
-  if(Serial2.available()>=9)    // number udane ka try kar
+  if(Serial2.available()>n)    // number udane ka try kar
   {  
  // pulse detection
      
@@ -74,7 +78,7 @@ void loop()
 // data storage
 
           text+=packet;
-          Serial.println(text);
+          Serial.println(packet);
 
 // acknowledge
 
@@ -86,5 +90,11 @@ void loop()
           
       }
      }
+     
+// end
+
+     else if(uart[0]==STOP){
+//          Serial.println(text);/
+          }
   }  
 } 
