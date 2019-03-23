@@ -1,0 +1,4 @@
+print print 65-54		 	'65'-54
+write print 65- 65			'65'-49
+write write 65-SOH(char)	'65'- 65
+print write 65- 65			'65'- 65
