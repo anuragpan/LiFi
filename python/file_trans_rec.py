@@ -1,7 +1,7 @@
 import os
 
 # file save location - works best with gui path picker
-save_path = os.path.join(os.path.expanduser('~'),'Documents/lifi/recieved_files') 
+save_path = os.path.join(os.path.expanduser('~'),'Documents/LiFi/Recieved_files') 
 
 # read any file
 pathname = raw_input("file path: ") # works best with gui file picker
