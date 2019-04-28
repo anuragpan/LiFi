@@ -4,8 +4,7 @@ import os
 save_path = os.path.join(os.path.expanduser('~'),'Documents/LiFi/Recieved_files') 
 
 # read any file
-pathname = raw_input("file path: ") # works best with gui file picker
-filer = open(pathname,"rb")
+filer = open("test.pdf","rb")
 base_path = os.path.basename(filer.name)
 image = filer.read()
 
